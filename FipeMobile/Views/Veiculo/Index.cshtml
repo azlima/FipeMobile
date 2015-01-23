@@ -1,0 +1,28 @@
+﻿@model IEnumerable<FipeMobile.Models.Veiculo>
+
+@{
+    ViewBag.Title = "Fipe Mobile";
+}
+
+@section Header {
+    @Html.ActionLink("Voltar", null, null, new { data_icon = "arrow-l", data_rel = "back", data_direction = "reverse" })
+    <h1>@ViewBag.Title</h1>
+}
+
+<h6>@ViewBag.Path</h6>
+
+@if (Model.Count() > 0)
+{
+    <ul data-role="listview" data-autodividers="true" data-filter="true" data-filter-placeholder="Busca veículos..." data-inset="true">
+        @foreach (var item in Model.ToList().OrderBy(x => x.name))
+        {
+            <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, item.name.Length > 26 ? new { rel = "tooltip", title = item.name } : null)</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Nenhum resultado encontrado para essa busca.</p>
+    <p>Tente novamente mais tarde.</p>
+}
+

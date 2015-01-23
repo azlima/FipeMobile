@@ -1,0 +1,32 @@
+﻿@model FipeMobile.Models.ModeloAno
+
+@{
+    ViewBag.Title = "Fipe Mobile";
+}
+
+@section Header {
+    @Html.ActionLink("Voltar", null, null, new { data_icon = "arrow-l", data_rel = "back", data_direction = "reverse" })
+    <h1>@ViewBag.Title</h1>
+    @Html.ActionLink("Home", "Index", "Marca", null, new { data_icon = "home", data_transition = "flip" })
+}
+
+<h6>@ViewBag.Path</h6>
+<h6>@ViewBag.PathSequence</h6>
+
+
+@if (Model != null)
+{
+    <div data-role="content">
+        <ul data-role="listview">
+            <li data-role="list-divider">@Model.veiculo</li>
+            <li rel="tooltip" title="@string.Format("{0}</br>{1}", ViewBag.FipeMarca, Model.veiculo)"><b>@ViewBag.FipeMarca<br/><br/>@Model.veiculo</b></li>
+            <li><b>Modelo: </b>@Model.name</li>
+            <li><b>Preço Médio: </b>@Model.preco</li>
+        </ul>
+    </div>
+}
+else
+{
+    <p>Nenhum resultado encontrado para essa busca.</p>
+    <p>Tente novamente mais tarde.</p>
+}

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<FipeMobile.Models.Marca>
+
+@{
+    ViewBag.Title = "Fipe Mobile";
+}
+
+@if (Model.Count() > 0)
+{
+    <div data-role="collapsible-set">
+    <div data-role="collapsible" data-mini="true" data-theme="g">
+        <h3>Carros</h3>
+        <ul data-role="listview" data-filter="true" data-filter-placeholder="Busca marcas de carros..." data-inset="true">
+            @foreach (var item in Model.Where(x => x.tipo == FipeMobile.Enums.TipoVeiculo.Carros).ToList().OrderBy(x => x.name))
+            {
+                <li>@Html.ActionLink(item.name, "Index", "Veiculo", new { tipo = (int)item.tipo, marcaName = item.name, marcaId = item.id, fipeName = item.fipe_name }, null)</li>
+            }
+        </ul>
+    </div>
+
+    <div data-role="collapsible" data-mini="true" data-theme="g">
+        <h3>Motos</h3>
+        <ul data-role="listview" data-filter="true" data-filter-placeholder="Busca marcas de motos..." data-inset="true">
+            @foreach (var item in Model.Where(x => x.tipo == FipeMobile.Enums.TipoVeiculo.Motos).ToList().OrderBy(x => x.name))
+            {
+                <li>@Html.ActionLink(item.name, "Index", "Veiculo", new { tipo = (int)item.tipo, marcaName = item.name, marcaId = item.id, fipeName = item.fipe_name }, null)</li>
+            }
+        </ul>
+    </div>
+    <div data-role="collapsible" data-mini="true" data-theme="g">
+        <h3>Caminhões</h3>
+        <ul data-role="listview" data-filter="true" data-filter-placeholder="Busca marcas de caminhões..." data-inset="true">
+            @foreach (var item in Model.Where(x => x.tipo == FipeMobile.Enums.TipoVeiculo.Caminhoes).ToList().OrderBy(x => x.name))
+            {
+                <li>@Html.ActionLink(item.name, "Index", "Veiculo", new { tipo = (int)item.tipo, marcaName = item.name, marcaId = item.id, fipeName = item.fipe_name }, null)</li>
+            }
+        </ul>
+    </div>
+</div>
+}
+else
+{
+    <p>Nenhum resultado encontrado para essa busca.</p>
+    <p>Tente novamente mais tarde.</p>
+}
+
