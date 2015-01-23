@@ -42,19 +42,15 @@
             </div>
         </div>
         <script>
-            //$(document).ready(function () {
-            //    $.mobile.ajaxEnabled = true;
-            //    $.mobile.loader.prototype.options.text = "Carregando...";
-            //    $.mobile.loader.prototype.options.textVisible = this;
-            //    $.mobile.loader.prototype.options.theme = "f";
-            //    $.mobile.defaultPageTransition = 'slide';
-            //});
+            $(document).ready(function () {
+                $.mobile.ajaxEnabled = true;
+            });
             $(document).on("mobileinit", function () {
                 $.mobile.ajaxEnabled = true;
                 $.mobile.loader.prototype.options.text = "Carregando...";
                 $.mobile.loader.prototype.options.textVisible = this;
                 $.mobile.loader.prototype.options.theme = "f";
-                //$.mobile.defaultPageTransition = 'slide';
+                $.mobile.defaultPageTransition = 'slide';
             });
         </script>
         @Scripts.Render("~/bundles/jquerymobile")
