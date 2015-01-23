@@ -1,59 +1,32 @@
-﻿<!DOCTYPE html> 
-<html> 
-    <head> 
-        <meta charset="utf-8" />
-        <title>@ViewBag.Title</title> 
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        @*@Styles.Render("~/Content/Mobile/css", "~/Content/jquerymobile/css")*@
-        @Styles.Render("~/Content/mobileCss", "~/Content/css")
-        @*@Scripts.Render("~/bundles/jquery", "~/bundles/jquerymobile")*@
-        @Scripts.Render("~/bundles/modernizr")
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/Mobile/css", "~/Content/jquerymobile/css")
+    @Scripts.Render("~/bundles/jquery", "~/bundles/jquerymobile")
+    <script>
+        $(document).ready(function () {
+            $.mobile.ajaxEnabled = false;
+        });
+    </script>
+</head>
+<body>
 
-    </head> 
-    <body> 
+    <div data-role="page" data-theme="a">
+        @Html.Partial("_ViewSwitcher")
 
-        @*<div data-role="page" data-theme="a">
-            @Html.Partial("_ViewSwitcher")
-
-            <div data-role="header">
-                <h1>@ViewBag.Title</h1>
-            </div>
-
-            <div data-role="content">
-                @RenderSection("featured", false)
-                @RenderBody()		
-            </div>
-
-        </div>*@
-        <div data-role="page" data-theme="f" class="ui-nodisc-icon">
-            <div data-role="header" data-position="fixed">
-                <h1>@ViewBag.Title</h1>
-            </div>
-            <div data-role="content">
-                @Scripts.Render("~/bundles/jquery")
-                @Scripts.Render("~/bundles/jquerytooltip")
-                @RenderBody()
-            </div>
-            <div data-role="footer" data-position="fixed">
-                <span style="padding:5px; font-size:x-small; font-weight:normal">Fipe Mobile 1.0</span>
-                <br />
-                <span style="padding:5px; font-size:x-small; font-weight: normal; float:left">Desenvolvido por&nbsp;<a href="http://www.windowsphone.com/pt-BR/store/publishers?publisherId=az_lima&appId=95645cc4-4470-4a66-b3f9-01f11281b47d" target="_blank" style="color:lightgray">az_Lima</a></span>
-                <span style="padding:5px; font-size:x-small; font-weight:normal; float:right">Copyright ©  2015.</span>
-            </div>
+        <div data-role="header">
+            <h1>@ViewBag.Title</h1>
         </div>
-        <script>
-            $(document).ready(function () {
-                $.mobile.ajaxEnabled = true;
-            });
-            $(document).on("mobileinit", function () {
-                $.mobile.ajaxEnabled = true;
-                $.mobile.loader.prototype.options.text = "Carregando...";
-                $.mobile.loader.prototype.options.textVisible = this;
-                $.mobile.loader.prototype.options.theme = "f";
-                $.mobile.defaultPageTransition = 'slide';
-            });
-        </script>
-        @Scripts.Render("~/bundles/jquerymobile")
-        @RenderSection("scripts", required: false)
-    </body>
+
+        <div data-role="content">
+            @RenderSection("featured", false)
+            @RenderBody()
+        </div>
+
+    </div>
+
+</body>
 </html>
