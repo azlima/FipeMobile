@@ -63,6 +63,11 @@
         };
 
         target.bind('mouseleave', remove_tooltip);
+        target.bind('mouseover', function () {
+            timeout = window.setTimeout(function () {
+                tooltip.hide();
+            }, 2000);
+        });
         tooltip.bind('click', remove_tooltip);
     });
 });
