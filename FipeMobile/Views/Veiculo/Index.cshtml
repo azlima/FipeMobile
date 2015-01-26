@@ -16,8 +16,14 @@
     <ul data-role="listview" data-autodividers="true" data-filter="true" data-filter-placeholder="Busca veículos..." data-inset="true" >
         @foreach (var item in Model.ToList().OrderBy(x => x.name))
         {
-            <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, new { style = "font-size:xx-small" })</li>
-            @*<li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, item.name.Length > 26 ? new { style = "font-size:x-small" /*rel = "tooltip", title = item.name*/ } : null)</li>*@
+            if (@Request.Browser.IsMobileDevice)
+            {
+                <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, new { style = "font-size:x-small" })</li>
+            }
+            else
+            {
+                <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, item.name.Length > 26 ? new { rel = "tooltip", title = item.name } : null)</li>
+            }
         }
     </ul>
 }
