@@ -5,7 +5,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Web.Mvc;
@@ -20,59 +19,47 @@
 
             Session["marca"] = new Marca() { id = marcaId, name = marcaName, tipo = (TipoVeiculo)tipo, fipe_name = fipeName };
 
-            if (Request.Browser.IsMobileDevice)
+            //Classe de suporte a consumo de HTTP namespace System.Net.Http
+            HttpClient client = new HttpClient();
+            //Adicionando no Header o token e o media type JSON
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            string uri = string.Format("http://fipeapi.appspot.com/api/1/{1}/veiculos/{0}.json", marcaId.ToString(), Enum.GetName(typeof(TipoVeiculo), (tipo)).ToLower());
+            //Fazendo a requisição
+            HttpResponseMessage response = client.GetAsync(uri).Result;
+            //Conferindo código 200 de sucesso
+            if (response.IsSuccessStatusCode)
             {
-                //WebClient webClient = new WebClient();
-
-                //string webUri = string.Format("http://fipeapi.appspot.com/api/1/{1}/veiculos/{0}.json", marcaId.ToString(), Enum.GetName(typeof(TipoVeiculo), (tipo)).ToLower());
-
-                //Uri nu = new Uri(webUri);
-                //webClient.DownloadStringAsync(nu);
-            }
-            else
-            {
-                //Classe de suporte a consumo de HTTP namespace System.Net.Http
-                HttpClient client = new HttpClient();
-                //Adicionando no Header o token e o media type JSON
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                string uri = string.Format("http://fipeapi.appspot.com/api/1/{1}/veiculos/{0}.json", marcaId.ToString(), Enum.GetName(typeof(TipoVeiculo), (tipo)).ToLower());
-                //Fazendo a requisição
-                HttpResponseMessage response = client.GetAsync(uri).Result;
-                //Conferindo código 200 de sucesso
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    try
+                    //Parse de JSON para o objeto Veiculos
+                    var resultsCount = response.Content.ReadAsAsync<object[]>().Result.Count();
+                    if (resultsCount > 1)
                     {
-                        //Parse de JSON para o objeto Veiculos
-                        var resultsCount = response.Content.ReadAsAsync<object[]>().Result.Count();
-                        if (resultsCount > 1)
+                        foreach (var veiculo in client.GetAsync(uri).Result.Content.ReadAsAsync<IList<Veiculo>>().Result)
                         {
-                            foreach (var veiculo in client.GetAsync(uri).Result.Content.ReadAsAsync<IList<Veiculo>>().Result)
-                            {
-                                veiculo.Marca = (Marca)Session["marca"];
-                                veiculos.Add(veiculo);
-                            }
-                        }
-                        else if (resultsCount == 1)
-                        {
-                            var veiculo = client.GetAsync(uri).Result.Content.ReadAsAsync<Veiculo>().Result;
                             veiculo.Marca = (Marca)Session["marca"];
                             veiculos.Add(veiculo);
                         }
                     }
-                    catch //(AggregateException aggregateException)
+                    else if (resultsCount == 1)
                     {
-                        return View(veiculos);
-                        //throw new Exception(ae.Message);
+                        var veiculo = client.GetAsync(uri).Result.Content.ReadAsAsync<Veiculo>().Result;
+                        veiculo.Marca = (Marca)Session["marca"];
+                        veiculos.Add(veiculo);
                     }
                 }
-                else
+                catch //(AggregateException aggregateException)
                 {
-                    //Exibindo a exceção com o código Http respectivo.
-                    //throw new Exception(string.Concat(response.StatusCode.ToString(), " - ", response.ReasonPhrase));
                     return View(veiculos);
+                    //throw new Exception(ae.Message);
                 }
+            }
+            else
+            {
+                //Exibindo a exceção com o código Http respectivo.
+                //throw new Exception(string.Concat(response.StatusCode.ToString(), " - ", response.ReasonPhrase));
+                return View(veiculos);
             }
 
             return View(veiculos);
