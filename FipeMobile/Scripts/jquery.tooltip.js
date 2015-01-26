@@ -66,7 +66,7 @@
         target.bind('mouseover', function () {
             timeout = window.setTimeout(function () {
                 tooltip.hide();
-            }, 2000);
+            }, 5000);
         });
         tooltip.bind('click', remove_tooltip);
     });
