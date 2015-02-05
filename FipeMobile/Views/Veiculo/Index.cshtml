@@ -18,7 +18,7 @@
         {
             if (@Request.Browser.IsMobileDevice)
             {
-                <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, new { style = "font-size:x-small" })</li>
+                <li>@Html.ActionLink(item.name, "Index", "Modelo", new { veiculoName = item.name, veiculoId = item.id }, null )</li> /* new { style = "font-size:x-small" })</li>*/
             }
             else
             {
